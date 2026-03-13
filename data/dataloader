@@ -1,0 +1,34 @@
+import torch
+from torch.utils.data import Dataset, DataLoader
+import numpy as np
+
+# --- CLASS CHO REFUGE ---
+class REFUGEDataset(Dataset):
+    def __init__(self, x_path, y_path, transform=None):
+        self.images = np.load(x_path)
+        self.masks = np.load(y_path)
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.images)
+
+    def __getitem__(self, idx):
+        image = self.images[idx]
+        mask = self.masks[idx]
+        # Xử lý transform và chuyển Tensor tại đây
+        return image, mask
+
+# --- CLASS CHO BOWL2018 (Nếu ông vẫn muốn giữ) ---
+class BowlDataset(Dataset):
+    def __init__(self, x_path, y_path, transform=None):
+        # Logic riêng cho Bowl2018
+        pass
+
+# --- HÀM KHỞI TẠO CHUNG ---
+def get_loader(dataset_name, x_path, y_path, batch_size, transform=None):
+    if dataset_name == 'REFUGE':
+        dataset = REFUGEDataset(x_path, y_path, transform)
+    elif dataset_name == 'Bowl2018':
+        dataset = BowlDataset(x_path, y_path, transform)
+    
+    return DataLoader(dataset, batch_size=batch_size, shuffle=True)
