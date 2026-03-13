@@ -1,3 +1,5 @@
+from data.dataloader import get_dataloaders
+
 class Args:
     def __init__(self):
         self.root = "/content/drive/MyDrive/Pytorch_ML_BDH/Report_PrePhase_BuiDuyHung/Dataset/"
@@ -30,7 +32,9 @@ class Args:
         self.labeled_ratio = 0.2 # Chỉ dùng 20% nhãn để học
         self.ema_decay = 0.999   # Hệ số cập nhật Teacher
 
-    def get_current_path(self):
+    def get_path(self):
         return self.data_paths.get(self.dataset)
 
-args = Args()
+args = Args(dataset="BUSI")
+
+u_loader, l_loader, t_loader = get_dataloaders(args)
